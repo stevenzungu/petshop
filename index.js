@@ -17,22 +17,50 @@ var animalSchema = mongoose.Schema({
 //Create the Mongoose Model
 var Animal = mongoose.model('Animal', animalSchema);
 //Testing database stuff
-var donkey = new Animal({
-  color: 'gray',
-  size: 'MED',
-  type: 'donkey',
-  price: 180
-});
-donkey.save(function(err, data){
-  if(err){
-    console.log(err);
-  } else {
-    console.log(data);
-  }
-});
+// var donkey = new Animal({
+//   color: 'gray',
+//   size: 'MED',
+//   type: 'donkey',
+//   price: 180
+// });
+// donkey.save(function(err, data){
+//   if(err){
+//     console.log(err);
+//   } else {
+//     console.log(data);
+//   }
+// });
 
 //GET /animals
+server.get('/animals', function(req, res){
+  Animal.find({}, function(err, documents){
+    if(err){
+      res.status(500).json({
+        msg: err
+      });
+
+    } else {
+      res.status(200).json({
+        animals: documents
+      });
+    }
+  });
+});
+
 //GET /animals/:id
+server.get('/animals/:id', function(req, res){
+  Animal.find({_id: req.params.id}, function(err, documents){
+    if(err){
+      res.status(500).json({
+       msg: err
+      });
+    } else {
+      res.status(200).json({
+        animals: documents
+      });
+    }
+  });
+});
 //POST /animals
 //PUT /animals/:id
 //DELETE /animals/:id
